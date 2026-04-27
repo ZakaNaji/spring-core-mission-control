@@ -1,6 +1,7 @@
 package com.znaji;
 
 import com.znaji.config.AppConfig;
+import com.znaji.core.MissionControlEngine;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MissionControlApplication {
@@ -10,8 +11,8 @@ public class MissionControlApplication {
             context.getEnvironment().setActiveProfiles("dev");
             context.refresh();
 
-            String appName = context.getBean("appName", String.class);
-            System.out.println("Application Name: " + appName);
+            MissionControlEngine engine = context.getBean(MissionControlEngine.class);
+            engine.start();
         }
     }
 }
