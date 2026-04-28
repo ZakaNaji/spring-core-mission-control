@@ -1,0 +1,10 @@
+package com.znaji.domain;
+
+public enum ResponsePlan {
+    NO_ACTION,
+    ENERGY_ESCALATION,
+    PREMIUM_ENERGY_ESCALATION,
+    PAYMENT_SUPPORT_ESCALATION,
+    SECURITY_LOCKDOWN,
+    TECHNICAL_WAR_ROOM
+}
