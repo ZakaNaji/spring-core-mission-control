@@ -4,6 +4,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Properties;
 
 @Component
@@ -17,13 +18,18 @@ public class IncidentLoader {
 
     public Properties load(String location) {
 
-        try {
-            Resource resource = resourceLoader.getResource(location);
+        Resource resource = resourceLoader.getResource(location);
+
+        if (!resource.exists()) {
+            throw new IllegalArgumentException("Resource not found at location: " + location);
+        }
+
+        try (var inputStream = resource.getInputStream()) {
             Properties properties = new Properties();
-            properties.load(resource.getInputStream());
+            properties.load(inputStream);
             return properties;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load incident properties from " + location, e);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load properties from resource: " + location, e);
         }
     }
 }
