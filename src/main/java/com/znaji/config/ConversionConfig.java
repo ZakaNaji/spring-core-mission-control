@@ -1,5 +1,6 @@
 package com.znaji.config;
 
+import com.znaji.conversion.IncidentCommandToIncidentConverter;
 import com.znaji.conversion.StringToIncidentIdConverter;
 import com.znaji.conversion.StringToSourceIdConverter;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ public class ConversionConfig {
         // Register custom converters here if needed
         conversionService.addConverter(new StringToIncidentIdConverter());
         conversionService.addConverter(new StringToSourceIdConverter());
+        conversionService.addConverter(new IncidentCommandToIncidentConverter());
         return conversionService;
     }
 }

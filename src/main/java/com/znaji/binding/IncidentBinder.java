@@ -10,6 +10,8 @@ import org.springframework.validation.DataBinder;
 
 import java.util.Properties;
 
+import static com.znaji.utils.Helper.from;
+
 @Component
 public class IncidentBinder {
 
@@ -49,16 +51,6 @@ public class IncidentBinder {
         return command;
     }
 
-    private MutablePropertyValues from(Properties properties, String prefix) {
-        MutablePropertyValues propertyValues = new MutablePropertyValues();
-        for (String key : properties.stringPropertyNames()) {
-            if (key.startsWith(prefix)) {
-                String propertyKey = key.substring(prefix.length());
-                String propertyValue = properties.getProperty(key);
-                propertyValues.add(propertyKey, propertyValue);
-            }
-        }
-        return propertyValues;
-    }
+
 }
 
