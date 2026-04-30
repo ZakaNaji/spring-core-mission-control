@@ -1,6 +1,7 @@
 package com.znaji.channel;
 
 import com.znaji.domain.Incident;
+import com.znaji.domain.IncidentCommand;
 import com.znaji.domain.ResponsePlan;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class ResponseDispatcher {
         this.channels = channels;
     }
 
-    public void dispatch(Incident incident, ResponsePlan plan) {
+    public void dispatch(IncidentCommand incident, ResponsePlan plan) {
         channels.forEach(channel -> channel.notify(incident, plan));
     }
 }

@@ -1,6 +1,6 @@
 package com.znaji.formatter;
 
-import com.znaji.domain.Incident;
+import com.znaji.domain.IncidentCommand;
 import com.znaji.domain.ResponsePlan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Primary
 public class SimpleIncidentFormatter implements IncidentFormatter {
     @Override
-    public String format(Incident incident, ResponsePlan plan) {
+    public String format(IncidentCommand incident, ResponsePlan plan) {
         return String.format("Incident: %s | Type: %s | Plan: %s",
-                incident.id(), incident.type(), plan);
+                incident.getId(), incident.getType(), plan);
     }
 }

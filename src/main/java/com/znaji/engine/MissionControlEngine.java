@@ -1,8 +1,8 @@
 package com.znaji.engine;
 
+import com.znaji.binding.IncidentBinder;
 import com.znaji.channel.ResponseDispatcher;
-import com.znaji.domain.Incident;
-import com.znaji.domain.IncidentType;
+import com.znaji.domain.IncidentCommand;
 import com.znaji.domain.ResponsePlan;
 import com.znaji.report.StartupReport;
 import org.springframework.stereotype.Component;
@@ -12,24 +12,32 @@ public class MissionControlEngine {
 
     private final StartupReport startupReport;
     private final ResponseDispatcher responseDispatcher;
+    private final IncidentBinder incidentBinder;
 
-    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher) {
+    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder) {
         this.startupReport = startupReport;
         this.responseDispatcher = responseDispatcher;
+        this.incidentBinder = incidentBinder;
     }
 
     public void start() {
         startupReport.report();
         System.out.println("Mission Control Engine is now running.");
 
-        System.out.println("Simulating incident creation...");
-        createFakeIncident();
+        // Simulate receiving an incident
+        String incidentLocation = "classpath:incidents/home-energy-spike.properties";
+        String prefix = "incident.";
+        IncidentCommand command = getIncident(incidentLocation, prefix);
+        // Simulate determining response plan based on incident type
+        ResponsePlan plan = ResponsePlan.PREMIUM_ENERGY_ESCALATION;
+        responseDispatcher.dispatch(command, plan);
     }
 
-    public void createFakeIncident() {
-        // Simulate creating a fake incident and response plan
-        Incident incident = new Incident("INC123", IncidentType.HOME_ENERGY_SPIKE, "HIGH", "kitchen-meter", 920, 700, "PREMIUM");
 
-        responseDispatcher.dispatch(incident, ResponsePlan.PREMIUM_ENERGY_ESCALATION);
+    public IncidentCommand getIncident(String incidentLocation, String prefix) {
+        System.out.println("Handling incident from location: " + incidentLocation);
+        IncidentCommand command = incidentBinder.bind(incidentLocation, prefix);
+        System.out.println("Incident bound to command: " + command.getId());
+        return command;
     }
 }
