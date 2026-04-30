@@ -28,9 +28,8 @@ public class MissionControlEngine {
         String incidentLocation = "classpath:incidents/home-energy-spike.properties";
         String prefix = "incident.";
         IncidentCommand command = getIncident(incidentLocation, prefix);
-        // Simulate determining response plan based on incident type
-        ResponsePlan plan = ResponsePlan.PREMIUM_ENERGY_ESCALATION;
-        responseDispatcher.dispatch(command, plan);
+        // no dispatch for now, just print the command
+        System.out.println("Received invalid Incident Command: " + command);
     }
 
 

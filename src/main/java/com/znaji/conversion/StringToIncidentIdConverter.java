@@ -8,7 +8,7 @@ public class StringToIncidentIdConverter implements Converter<String, IncidentId
     @Override
     public IncidentId convert(String source) {
         try {
-            return new IncidentId(source);
+            return new IncidentId(source.trim());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid IncidentId format: " + source, e);
         }
