@@ -28,6 +28,12 @@ public class IncidentBinder {
         binder.setConversionService(conversionService);
 
         binder.bind(incidentProp);
+        if (binder.getBindingResult().hasErrors()) {
+            binder.getBindingResult()
+                    .getAllErrors()
+                    .forEach(error -> System.err.println("[Binding error]: " + error));
+            throw new IllegalArgumentException("Failed to bind incident properties: " + binder.getBindingResult());
+        }
         return command;
     }
 
