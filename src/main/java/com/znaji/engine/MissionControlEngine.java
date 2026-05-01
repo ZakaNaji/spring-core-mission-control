@@ -10,6 +10,7 @@ import com.znaji.domain.ResponseDecision;
 import com.znaji.event.IncidentFailedEvent;
 import com.znaji.event.IncidentLoadedEvent;
 import com.znaji.event.IncidentResolvedEvent;
+import com.znaji.event.ResponseDispatchedEvent;
 import com.znaji.report.LocalizedIncidentReportService;
 import com.znaji.report.StartupReport;
 import org.springframework.context.ApplicationEventPublisher;
@@ -52,8 +53,10 @@ public class MissionControlEngine {
 
             Incident incident = IncidentMapper.toDomain(command);
             ResponseDecision responseDecision = ruleEngine.evaluate(incident);
-            eventPublisher.publishEvent(new IncidentResolvedEvent(incident, responseDecision));
             responseDispatcher.dispatch(incident, responseDecision.responsePlan());
+
+            eventPublisher.publishEvent(new ResponseDispatchedEvent(incident, responseDecision.responsePlan()));
+            eventPublisher.publishEvent(new IncidentResolvedEvent(incident, responseDecision));
 
             System.out.println("[REPORT] " + reportService.generateReport(incident, responseDecision, Locale.FRENCH));
         } catch (IncidentValidationException e) {
