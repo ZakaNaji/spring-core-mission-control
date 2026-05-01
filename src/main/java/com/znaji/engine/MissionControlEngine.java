@@ -2,9 +2,11 @@ package com.znaji.engine;
 
 import com.znaji.binding.IncidentBinder;
 import com.znaji.channel.ResponseDispatcher;
+import com.znaji.domain.Incident;
 import com.znaji.domain.IncidentCommand;
-import com.znaji.domain.ResponsePlan;
+import com.znaji.domain.ResponseDecision;
 import com.znaji.report.StartupReport;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,11 +15,15 @@ public class MissionControlEngine {
     private final StartupReport startupReport;
     private final ResponseDispatcher responseDispatcher;
     private final IncidentBinder incidentBinder;
+    private final IncidentRuleEngine ruleEngine;
+    private final ConversionService conversionService;
 
-    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder) {
+    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder, IncidentRuleEngine ruleEngine, ConversionService conversionService) {
         this.startupReport = startupReport;
         this.responseDispatcher = responseDispatcher;
         this.incidentBinder = incidentBinder;
+        this.ruleEngine = ruleEngine;
+        this.conversionService = conversionService;
     }
 
     public void start() {
@@ -29,7 +35,9 @@ public class MissionControlEngine {
         String prefix = "incident.";
         IncidentCommand command = getIncident(incidentLocation, prefix);
         // no dispatch for now, just print the command
-        System.out.println("Received invalid Incident Command: " + command);
+
+        ResponseDecision responseDecision = ruleEngine.evaluate(conversionService.convert(command, Incident.class));
+        System.out.println("Response decision: " + responseDecision);
     }
 
 

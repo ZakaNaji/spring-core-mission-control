@@ -3,11 +3,11 @@ package com.znaji.domain;
 public record Incident (
      String id,
      IncidentType type,
-     String severity,
+     Severity severity,
      String source,
      double value,
      double threshold,
-     String customerTier) {}
+     CustomerTier customerTier) {}
 
 
 /*

@@ -11,11 +11,11 @@ public class IncidentCommandToIncidentConverter implements Converter<IncidentCom
         return new Incident(
                 source.getId().value(),
                 source.getType(),
-                source.getSeverity().name(),
+                source.getSeverity(),
                 source.getSource().value(),
                 source.getValue() != null ? source.getValue().doubleValue() : 0.0,
                 source.getThreshold() != null ? source.getThreshold().doubleValue() : 0.0,
-                source.getCustomerTier().name()
+                source.getCustomerTier()
         );
     }
 }
