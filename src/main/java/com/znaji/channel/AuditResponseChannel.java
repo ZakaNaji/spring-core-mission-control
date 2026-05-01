@@ -1,6 +1,6 @@
 package com.znaji.channel;
 
-import com.znaji.domain.IncidentCommand;
+import com.znaji.domain.Incident;
 import com.znaji.domain.ResponsePlan;
 import com.znaji.formatter.IncidentFormatter;
 import org.springframework.core.annotation.Order;
@@ -16,7 +16,7 @@ public class AuditResponseChannel implements ResponseChannel {
     }
 
     @Override
-    public void notify(IncidentCommand incident, ResponsePlan plan) {
+    public void notify(Incident incident, ResponsePlan plan) {
         String logEntry = formatter.format(incident, plan);
         // Simulate writing to an audit log
         System.out.println("AUDIT LOG: " + logEntry);

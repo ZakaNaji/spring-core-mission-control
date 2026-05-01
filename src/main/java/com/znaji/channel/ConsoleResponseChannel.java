@@ -1,6 +1,6 @@
 package com.znaji.channel;
 
-import com.znaji.domain.IncidentCommand;
+import com.znaji.domain.Incident;
 import com.znaji.domain.ResponsePlan;
 import com.znaji.formatter.IncidentFormatter;
 import org.springframework.core.annotation.Order;
@@ -16,7 +16,7 @@ public class ConsoleResponseChannel implements ResponseChannel{
     }
 
     @Override
-    public void notify(IncidentCommand incident, ResponsePlan plan) {
+    public void notify(Incident incident, ResponsePlan plan) {
         String message = formatter.format(incident, plan);
         System.out.println("CONSOLE NOTIFICATION: " + message);
     }

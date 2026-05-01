@@ -4,8 +4,10 @@ import com.znaji.binding.RuleBinder;
 import com.znaji.domain.Incident;
 import com.znaji.domain.ResponseDecision;
 import com.znaji.domain.ResponsePlan;
+import com.znaji.event.RuleMatchedEvent;
 import com.znaji.rule.IncidentRule;
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -21,10 +23,12 @@ public class SpelIncidentRuleEngine implements IncidentRuleEngine {
     private final static String MISSION_CONTROL_PROPERTIES = "classpath:mission-control.properties";
     private final ExpressionParser parser = new SpelExpressionParser();
     private List<IncidentRule> rules;
+    private final ApplicationEventPublisher applicationEvent;
 
 
-    public SpelIncidentRuleEngine(RuleBinder ruleBinder) {
+    public SpelIncidentRuleEngine(RuleBinder ruleBinder, ApplicationEventPublisher applicationEvent) {
         this.ruleBinder = ruleBinder;
+        this.applicationEvent = applicationEvent;
     }
 
     @PostConstruct
@@ -38,6 +42,7 @@ public class SpelIncidentRuleEngine implements IncidentRuleEngine {
 
         for (IncidentRule rule : rules) {
             if (matches(rule, incident)) {
+                applicationEvent.publishEvent(new RuleMatchedEvent(rule.name(), rule.plan()));
                 return new ResponseDecision(rule.name(), rule.plan());
             }
         }
