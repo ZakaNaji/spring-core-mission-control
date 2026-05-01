@@ -12,7 +12,7 @@ public class MissionControlApplication {
             context.refresh();
 
             MissionControlEngine engine = context.getBean(MissionControlEngine.class);
-            engine.start();
+            //engine.start();
 
         } catch (Exception e) {
             e.printStackTrace();

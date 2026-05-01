@@ -5,6 +5,7 @@ import com.znaji.domain.Incident;
 import com.znaji.domain.ResponseDecision;
 import com.znaji.domain.ResponsePlan;
 import com.znaji.event.RuleMatchedEvent;
+import com.znaji.lifecycle.MissionComponent;
 import com.znaji.rule.IncidentRule;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.ApplicationEventPublisher;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@MissionComponent("rule-engine")
 @Component
 public class SpelIncidentRuleEngine implements IncidentRuleEngine {
 
