@@ -11,8 +11,10 @@ import com.znaji.event.IncidentFailedEvent;
 import com.znaji.event.IncidentLoadedEvent;
 import com.znaji.event.IncidentResolvedEvent;
 import com.znaji.event.ResponseDispatchedEvent;
+import com.znaji.lifecycle.MissionExecutionContext;
 import com.znaji.report.LocalizedIncidentReportService;
 import com.znaji.report.StartupReport;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
@@ -29,8 +31,9 @@ public class MissionControlEngine {
     private final ConversionService conversionService;
     private final ApplicationEventPublisher eventPublisher;
     private final LocalizedIncidentReportService reportService;
+    private final ObjectProvider<MissionExecutionContext> executionContextProvider;
 
-    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder, IncidentRuleEngine ruleEngine, ConversionService conversionService, ApplicationEventPublisher eventPublisher, LocalizedIncidentReportService reportService) {
+    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder, IncidentRuleEngine ruleEngine, ConversionService conversionService, ApplicationEventPublisher eventPublisher, LocalizedIncidentReportService reportService, ObjectProvider<MissionExecutionContext> executionContextProvider) {
         this.startupReport = startupReport;
         this.responseDispatcher = responseDispatcher;
         this.incidentBinder = incidentBinder;
@@ -38,14 +41,14 @@ public class MissionControlEngine {
         this.conversionService = conversionService;
         this.eventPublisher = eventPublisher;
         this.reportService = reportService;
+        this.executionContextProvider = executionContextProvider;
     }
 
-    public void start() {
+    public void start(String incidentLocation) {
         startupReport.report();
-        System.out.println("Mission Control Engine is now running.");
+        System.out.println("[Execution ] Mission execution context ID: " + executionContextProvider.getIfAvailable().getExecutionId());
 
         // Simulate receiving an incident
-        String incidentLocation = "classpath:incidents/home-energy-spike.properties";
         String prefix = "incident.";
         try {
             IncidentCommand command = getIncident(incidentLocation, prefix);

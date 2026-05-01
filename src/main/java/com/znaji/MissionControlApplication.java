@@ -12,7 +12,9 @@ public class MissionControlApplication {
             context.refresh();
 
             MissionControlEngine engine = context.getBean(MissionControlEngine.class);
-            //engine.start();
+            engine.start("classpath:incidents/home-energy-spike.properties");
+            System.out.println("second Incident:");
+            engine.start("classpath:incidents/invalid-inci1.properties");
 
         } catch (Exception e) {
             e.printStackTrace();
