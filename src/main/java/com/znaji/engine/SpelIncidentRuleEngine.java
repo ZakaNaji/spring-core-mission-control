@@ -18,7 +18,8 @@ import java.util.List;
 public class SpelIncidentRuleEngine implements IncidentRuleEngine {
 
     private final RuleBinder ruleBinder;
-    private final static String missionControlProperties = "classpath:mission-control.properties";
+    private final static String MISSION_CONTROL_PROPERTIES = "classpath:mission-control.properties";
+    private final ExpressionParser parser = new SpelExpressionParser();
     private List<IncidentRule> rules;
 
 
@@ -28,7 +29,7 @@ public class SpelIncidentRuleEngine implements IncidentRuleEngine {
 
     @PostConstruct
     public void init() {
-        this.rules = ruleBinder.bind(missionControlProperties);
+        this.rules = ruleBinder.bind(MISSION_CONTROL_PROPERTIES);
     }
 
 
@@ -40,11 +41,10 @@ public class SpelIncidentRuleEngine implements IncidentRuleEngine {
                 return new ResponseDecision(rule.name(), rule.plan());
             }
         }
-        return new ResponseDecision("No rules configured", ResponsePlan.NO_ACTION);
+        return new ResponseDecision("fallback-no-action", ResponsePlan.NO_ACTION);
     }
 
     private boolean matches(IncidentRule rule, Incident incident) {
-        ExpressionParser parser = new SpelExpressionParser();
         EvaluationContext context = new StandardEvaluationContext();
         context.setVariable("incident", incident);
         try {
