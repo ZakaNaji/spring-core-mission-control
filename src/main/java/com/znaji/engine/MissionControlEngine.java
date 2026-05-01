@@ -10,10 +10,13 @@ import com.znaji.domain.ResponseDecision;
 import com.znaji.event.IncidentFailedEvent;
 import com.znaji.event.IncidentLoadedEvent;
 import com.znaji.event.IncidentResolvedEvent;
+import com.znaji.report.LocalizedIncidentReportService;
 import com.znaji.report.StartupReport;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 @Component
 public class MissionControlEngine {
@@ -24,14 +27,16 @@ public class MissionControlEngine {
     private final IncidentRuleEngine ruleEngine;
     private final ConversionService conversionService;
     private final ApplicationEventPublisher eventPublisher;
+    private final LocalizedIncidentReportService reportService;
 
-    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder, IncidentRuleEngine ruleEngine, ConversionService conversionService, ApplicationEventPublisher eventPublisher) {
+    public MissionControlEngine(StartupReport startupReport, ResponseDispatcher responseDispatcher, IncidentBinder incidentBinder, IncidentRuleEngine ruleEngine, ConversionService conversionService, ApplicationEventPublisher eventPublisher, LocalizedIncidentReportService reportService) {
         this.startupReport = startupReport;
         this.responseDispatcher = responseDispatcher;
         this.incidentBinder = incidentBinder;
         this.ruleEngine = ruleEngine;
         this.conversionService = conversionService;
         this.eventPublisher = eventPublisher;
+        this.reportService = reportService;
     }
 
     public void start() {
@@ -49,6 +54,8 @@ public class MissionControlEngine {
             ResponseDecision responseDecision = ruleEngine.evaluate(incident);
             eventPublisher.publishEvent(new IncidentResolvedEvent(incident, responseDecision));
             responseDispatcher.dispatch(incident, responseDecision.responsePlan());
+
+            System.out.println("[REPORT] " + reportService.generateReport(incident, responseDecision, Locale.FRENCH));
         } catch (IncidentValidationException e) {
             eventPublisher.publishEvent(new IncidentFailedEvent(incidentLocation, e.getErrors()));
             return;
