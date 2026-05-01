@@ -2,6 +2,7 @@ package com.znaji.engine;
 
 import com.znaji.binding.IncidentBinder;
 import com.znaji.channel.ResponseDispatcher;
+import com.znaji.conversion.IncidentMapper;
 import com.znaji.domain.Incident;
 import com.znaji.domain.IncidentCommand;
 import com.znaji.domain.ResponseDecision;
@@ -36,7 +37,7 @@ public class MissionControlEngine {
         IncidentCommand command = getIncident(incidentLocation, prefix);
         // no dispatch for now, just print the command
 
-        ResponseDecision responseDecision = ruleEngine.evaluate(conversionService.convert(command, Incident.class));
+        ResponseDecision responseDecision = ruleEngine.evaluate(IncidentMapper.toDomain(command));
         System.out.println("Response decision: " + responseDecision);
     }
 

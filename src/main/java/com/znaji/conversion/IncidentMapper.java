@@ -4,10 +4,12 @@ import com.znaji.domain.Incident;
 import com.znaji.domain.IncidentCommand;
 import org.springframework.core.convert.converter.Converter;
 
-public class IncidentCommandToIncidentConverter implements Converter<IncidentCommand, Incident> {
+public class IncidentMapper {
 
-    @Override
-    public Incident convert(IncidentCommand source) {
+    private IncidentMapper () {
+    }
+
+    public static Incident toDomain(IncidentCommand source) {
         return new Incident(
                 source.getId(),
                 source.getType(),
