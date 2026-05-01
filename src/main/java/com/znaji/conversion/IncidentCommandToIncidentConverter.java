@@ -9,12 +9,12 @@ public class IncidentCommandToIncidentConverter implements Converter<IncidentCom
     @Override
     public Incident convert(IncidentCommand source) {
         return new Incident(
-                source.getId().value(),
+                source.getId(),
                 source.getType(),
                 source.getSeverity(),
-                source.getSource().value(),
-                source.getValue() != null ? source.getValue().doubleValue() : 0.0,
-                source.getThreshold() != null ? source.getThreshold().doubleValue() : 0.0,
+                source.getSource(),
+                source.getValue(),
+                source.getThreshold(),
                 source.getCustomerTier()
         );
     }

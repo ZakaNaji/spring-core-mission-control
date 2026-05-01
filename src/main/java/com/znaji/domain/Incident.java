@@ -1,12 +1,14 @@
 package com.znaji.domain;
 
+import java.math.BigDecimal;
+
 public record Incident (
-     String id,
+     IncidentId id,
      IncidentType type,
      Severity severity,
-     String source,
-     double value,
-     double threshold,
+     SourceId source,
+     BigDecimal value,
+     BigDecimal threshold,
      CustomerTier customerTier) {}
 
 
