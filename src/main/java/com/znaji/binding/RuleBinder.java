@@ -10,6 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.DataBinder;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,6 +47,7 @@ public class RuleBinder {
 
         return target.getRules()
                 .stream()
+                .sorted(Comparator.comparingInt(IncidentRuleConfig::getOrder))
                 .map(IncidentRuleConfig::toIncidentRule)
                 .toList();
 
