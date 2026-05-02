@@ -16,6 +16,7 @@ import com.znaji.report.LocalizedIncidentReportService;
 import com.znaji.report.StartupReport;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +62,7 @@ public class MissionControlEngine {
             eventPublisher.publishEvent(new ResponseDispatchedEvent(incident, responseDecision.responsePlan()));
             eventPublisher.publishEvent(new IncidentResolvedEvent(incident, responseDecision));
 
-            System.out.println("[REPORT] " + reportService.generateReport(incident, responseDecision, Locale.FRENCH));
+            System.out.println("[REPORT] " + reportService.generateReport(incident, responseDecision, LocaleContextHolder.getLocale()));
         } catch (IncidentValidationException e) {
             eventPublisher.publishEvent(new IncidentFailedEvent(incidentLocation, e.getErrors()));
             return;
