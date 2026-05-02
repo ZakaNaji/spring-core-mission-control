@@ -7,6 +7,7 @@ import com.znaji.domain.ResponsePlan;
 import com.znaji.event.RuleMatchedEvent;
 import com.znaji.lifecycle.MissionComponent;
 import com.znaji.rule.IncidentRule;
+import com.znaji.timing.MissionTiming;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.expression.EvaluationContext;
@@ -40,6 +41,7 @@ public class SpelIncidentRuleEngine implements IncidentRuleEngine {
 
 
     @Override
+    @MissionTiming
     public ResponseDecision evaluate(Incident incident) {
 
         for (IncidentRule rule : rules) {

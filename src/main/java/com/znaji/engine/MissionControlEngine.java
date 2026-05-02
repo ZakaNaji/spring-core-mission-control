@@ -46,7 +46,7 @@ public class MissionControlEngine {
 
     public void start(String incidentLocation) {
         startupReport.report();
-        System.out.println("[Execution ] Mission execution context ID: " + executionContextProvider.getIfAvailable().getExecutionId());
+        System.out.println("[Execution ] Mission execution context ID: " + executionContextProvider.getObject().getExecutionId());
 
         // Simulate receiving an incident
         String prefix = "incident.";
